@@ -598,15 +598,18 @@ namespace AutoDoxyDoc
         /// <param name="indentCount">Comment indentation level (after asterisk).</param>
         private void AppendComments(StringBuilder sb, List<string> comments, string spaces, int indentCount)
         {
-            // First comment line as a special case since we don't need to write any indentation.
-            sb.Append(comments[0]);
-
-            // Add new lines for rest of the comments.
-            string indentString = new string(' ', indentCount);
-
-            for (int i = 1; i < comments.Count; ++i)
+            if (comments.Count > 0)
             {
-                sb.Append("\r\n" + spaces + " *  " + indentString + comments[i]);
+                // First comment line as a special case since we don't need to write any indentation.
+                sb.Append(comments[0]);
+
+                // Add new lines for rest of the comments.
+                string indentString = new string(' ', indentCount);
+
+                for (int i = 1; i < comments.Count; ++i)
+                {
+                    sb.Append("\r\n" + spaces + " *  " + indentString + comments[i]);
+                }
             }
         }
 
