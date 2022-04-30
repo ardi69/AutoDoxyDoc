@@ -459,13 +459,17 @@ namespace AutoDoxyDoc
                             string name = paramMatch.Groups[2].Value;
                             string firstComment = paramMatch.Groups[3].Value;
 
-                            if (!parsedComment.Parameters.ContainsKey(name) && firstComment.Length > 0)
+                            if (!parsedComment.Parameters.ContainsKey(name))
                             {
                                 ParsedParam param = new ParsedParam();
                                 param.Name = name;
                                 param.Direction = ToDirection(paramMatch.Groups[1].Value);
-                                param.Comments.Add(firstComment);
-                                i = ParseExtraComments(lines, i + 1, param.Comments);
+
+                                if (firstComment.Length > 0)
+                                {
+                                    param.Comments.Add(firstComment);
+                                    i = ParseExtraComments(lines, i + 1, param.Comments);
+                                }
 
                                 parsedComment.Parameters.Add(param.Name, param);
                             }
