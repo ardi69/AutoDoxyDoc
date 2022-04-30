@@ -881,7 +881,7 @@ namespace AutoDoxyDoc
         private void InitStyle()
         {
             m_indentString = new string(' ', Config.TagIndentation);
-            m_regexParam = new Regex(@"\s*\*\s+\" + Config.TagChar + @"param\s+(\[[a-z,]+\])\s+(\w+)(?:\s+(.*))?$", RegexOptions.Compiled);
+            m_regexParam = new Regex(@"\s*\*\s+\" + Config.TagChar + @"param\s*(\[[a-z,]+\])?\s+(\w+)(?:\s+(.*))?$", RegexOptions.Compiled);
             m_regexTParam = new Regex(@"\s*\*\s+\" + Config.TagChar + @"tparam\s+(\w+)(?:\s+(.*))?$", RegexOptions.Compiled);
             m_regexTagSection = new Regex(@"\s*\*\s+\" + Config.TagChar + @"([a-z]+)(?:\s+(.*))?$", RegexOptions.Compiled);
         }
