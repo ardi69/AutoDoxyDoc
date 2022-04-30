@@ -114,9 +114,10 @@ namespace AutoDoxyDoc
                             string currentLine = m_textView.TextSnapshot.GetLineFromPosition(
                                     m_textView.Caret.Position.BufferPosition.Position).GetText();
 
-                            if (IsInsideComment(currentLine))
+                            int indent = 0;
+                            if (IsInsideDoxygenCommentBlock(currentLine, out indent))
                             {
-                                NewCommentLine(currentLine);
+                                NewCommentLine(currentLine, indent);
                                 return VSConstants.S_OK;
                             }
                         }
@@ -227,13 +228,9 @@ namespace AutoDoxyDoc
         /// Creates a new comment line based on the position of the caret and Doxygen configuration.
         /// </summary>
         /// <param name="currentLine">Current line for reference.</param>
-        private void NewCommentLine(string currentLine)
+        private void NewCommentLine(string currentLine, int indent)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-
-            string startSpaces = currentLine.Replace(currentLine.TrimStart(), "");
-            string endSpaces = currentLine.Replace(currentLine.TrimEnd(), "");
-
             TextSelection ts = m_dte.ActiveDocument.Selection as TextSelection;
 
             // Try to also guess proper indentation level based on the current line.
@@ -241,7 +238,12 @@ namespace AutoDoxyDoc
             int oldOffset = ts.ActivePoint.LineCharOffset;
             int extraIndent = 0;
 
-            while (!currentLine.StartsWith("/*!"))
+            // Calculate how many trailing spaces there will be left before the line break point.
+            string trimmedLine = currentLine.Substring(0, oldOffset - 1);
+            int numTrailingSpaces = trimmedLine.Length - trimmedLine.TrimEnd().Length;
+
+            // At this point we know that we are inside a comment, so we don't need to check for any other cases.
+            while (!currentLine.Contains("/*!"))
             {
                 if (m_regexTagSection.IsMatch(currentLine))
                 {
@@ -256,10 +258,10 @@ namespace AutoDoxyDoc
 
             // Remove extra spaces from the previous line and add tag start line.
             ts.MoveToLineAndOffset(oldLine, oldOffset);
-            ts.DeleteLeft(endSpaces.Length);
+            ts.DeleteLeft(numTrailingSpaces);
 
             // TODO: This adds trailing space. Get rid of it similarly to SmartIndent().
-            ts.Insert(m_generator.GenerateTagStartLine(startSpaces) + new string(' ', extraIndent));
+            ts.Insert(m_generator.GenerateTagStartLine(new string (' ', indent)) + new string(' ', extraIndent));
         }
 
         /// <summary>
@@ -455,16 +457,138 @@ namespace AutoDoxyDoc
             return m_session != null && !m_session.IsDismissed;
         }
 
+        private enum CommentStatus
+        {
+            Yes,
+            No,
+            Maybe
+        }
+
+        private static int FindLastToken(string line, string token)
+        {
+            int indexToken = line.LastIndexOf(token);
+
+            // Check if the token is inside a string literal.
+            if (indexToken != -1)
+            {
+                // Check if the token is inside a single line comment.
+                int indexSingleLineComment = line.IndexOf("//");
+
+                if (indexSingleLineComment != -1 && indexSingleLineComment < indexToken)
+                {
+                    return -1;
+                }
+
+                // Check if the token is inside a string literal.
+                string prefix = line.Substring(0, indexToken);
+                int quoteCount = prefix.Length - prefix.Replace("\"", "").Length;
+
+                if (quoteCount % 2 == 1)
+                {
+                    return -1;
+                }
+            }
+
+            return indexToken;
+        }
+
+        private static CommentStatus TestCommentLine(string line)
+        {
+            // TODO: There are still some corner cases that are not properly checked.
+            int indexStart = FindLastToken(line, "/*!");
+            int indexEnd = line.LastIndexOf("*/");
+
+            if (indexStart != -1)
+            {
+                if (indexEnd == -1)
+                {
+                    return CommentStatus.Yes;
+                }
+                else if (indexStart < indexEnd)
+                {
+                    // Line starts and ends a comment.
+                    return CommentStatus.No;
+                }
+                else
+                {
+                    // Line ends a comment but starts a new one at a later offset.
+                    return CommentStatus.Yes;
+                }
+            }
+            else // No starting block found.
+            {
+                if (indexEnd == -1)
+                {
+                    // No comment tokens found. Check if the line starts with an asterisk. Then it could be
+                    // continuing a doxygen comment.
+                    if (line.TrimStart().StartsWith("*"))
+                    {
+                        return CommentStatus.Maybe;
+                    }
+                    else
+                    {
+                        return CommentStatus.No;
+                    }
+                }
+                else
+                {
+                    // End comment block found, so not inside a comment anymore after this line.
+                    return CommentStatus.No;
+                }
+            }
+        }
+
         /// <summary>
-        /// Check if the line is inside a comment.
+        /// Check if the line is inside a multi-line doxygen comment block.
         /// </summary>
         /// <param name="line">The line to check.</param>
         /// <returns>True if the line is inside a comment.</returns>
-        private static bool IsInsideComment(string line)
+        private bool IsInsideDoxygenCommentBlock(string line, out int indent)
         {
-            // TODO: This is overly simplified and should be replaced with a solution that works also in corner cases.
-            string trimmedLine = line.TrimStart();
-            return trimmedLine.StartsWith("/*!") || (trimmedLine.StartsWith("*") && !trimmedLine.StartsWith("*/"));
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            // Peek through the text before this line to see if we are inside a doxygen comment block.
+            TextSelection ts = m_dte.ActiveDocument.Selection as TextSelection;
+            int oldLine = ts.ActivePoint.Line;
+            int oldOffset = ts.ActivePoint.LineCharOffset;
+
+            int curLineIndex = oldLine;
+            string trimmedLine = line.Substring(0, oldOffset - 1);
+            string curLine = trimmedLine;
+
+            // Check the current line as a special case. We only want to continue the comment if it follows the
+            // asterisk prefix.
+            CommentStatus status = TestCommentLine(curLine);
+
+            while (status == CommentStatus.Maybe)
+            {
+                --curLineIndex;
+
+                // Stop when we reach the beginning of the file.
+                if (curLineIndex == 0)
+                {
+                    break;
+                }
+
+                ts.LineUp();
+                curLine = ts.ActivePoint.CreateEditPoint().GetLines(ts.ActivePoint.Line, ts.ActivePoint.Line + 1);
+                status = TestCommentLine(curLine);
+            }
+
+            // Revert the caret position.
+            ts.MoveToLineAndOffset(oldLine, oldOffset);
+
+            // We are inside a comment only if we got definitive yes from the loop.
+            if (status == CommentStatus.Yes)
+            {
+                indent = line.IndexOf('*');
+                return true;
+            }
+            else
+            {
+                indent = 0;
+                return false;
+            }
         }
 
         /// <summary>
