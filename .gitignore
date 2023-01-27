@@ -6,7 +6,7 @@
 AutoDoxyDoc/bin/Debug/*
 AutoDoxyDoc/bin/Release/*
 AutoDoxyDoc/backup/*
-**/.vs/**/v15/**
+**/.vs/*
 *TemporaryGeneratedFile*
 AutoDoxyDoc/.vs/AutoDoxyDoc/v15/.suo
 AutoDoxyDoc/UpgradeLog.htm

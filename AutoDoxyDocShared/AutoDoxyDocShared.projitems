@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>96675a26-17ee-4d50-b34e-01ad98101388</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AutoDoxyDocShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AbbreviationEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AbbreviationMap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AbbreviationMapConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AbbreviationsEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AbbreviationsEditorDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AbbreviationsEditorDialog.Designer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutoDoxyDocPackage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CompletionHandlerProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CompletionSourceProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DoxygenCompletionCommandHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DoxygenCompletionSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DoxygenConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DoxygenConfigService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DoxygenGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GenerateComment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OptionsPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StringHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)AbbreviationsEditorDialog.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)VSPackage.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)stylesheet.css" />
+  </ItemGroup>
+</Project>

@@ -1,25 +1,58 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1259
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoDoxyDoc", "AutoDoxyDoc\AutoDoxyDoc.csproj", "{E5FF4D34-BB98-4261-B330-B6C88C91BE51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoDoxyDoc", "AutoDoxyDoc\AutoDoxyDoc.csproj", "{BEA15CC2-257E-4601-AA6D-F8664690DCAA}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoDoxyDocShared", "AutoDoxyDocShared\AutoDoxyDocShared.shproj", "{96675A26-17EE-4D50-B34E-01AD98101388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoDoxyDoc_vs2022", "AutoDoxyDoc_vs2022\AutoDoxyDoc_vs2022.csproj", "{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|arm64 = Debug|arm64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|arm64 = Release|arm64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E5FF4D34-BB98-4261-B330-B6C88C91BE51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E5FF4D34-BB98-4261-B330-B6C88C91BE51}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E5FF4D34-BB98-4261-B330-B6C88C91BE51}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E5FF4D34-BB98-4261-B330-B6C88C91BE51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Debug|arm64.ActiveCfg = Debug|arm64
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Debug|arm64.Build.0 = Debug|arm64
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Debug|x86.ActiveCfg = Debug|x86
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Debug|x86.Build.0 = Debug|x86
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Release|arm64.ActiveCfg = Release|arm64
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Release|arm64.Build.0 = Release|arm64
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Release|x86.ActiveCfg = Release|x86
+		{BEA15CC2-257E-4601-AA6D-F8664690DCAA}.Release|x86.Build.0 = Release|x86
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Debug|arm64.ActiveCfg = Debug|arm64
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Debug|arm64.Build.0 = Debug|arm64
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Debug|x86.ActiveCfg = Debug|x86
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Debug|x86.Build.0 = Debug|x86
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Release|arm64.ActiveCfg = Release|arm64
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Release|arm64.Build.0 = Release|arm64
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Release|x86.ActiveCfg = Release|x86
+		{44C5C7ED-4E44-4296-8AF6-4943CB93E2E2}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F180B279-87F4-4529-AD37-03CF120D073A}
+		SolutionGuid = {F5674447-AC5D-4CAD-9A03-217455904E9A}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		AutoDoxyDocShared\AutoDoxyDocShared.projitems*{44c5c7ed-4e44-4296-8af6-4943cb93e2e2}*SharedItemsImports = 4
+		AutoDoxyDocShared\AutoDoxyDocShared.projitems*{96675a26-17ee-4d50-b34e-01ad98101388}*SharedItemsImports = 13
+		AutoDoxyDocShared\AutoDoxyDocShared.projitems*{bea15cc2-257e-4601-aa6d-f8664690dcaa}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

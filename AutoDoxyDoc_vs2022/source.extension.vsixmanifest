@@ -3,22 +3,19 @@
     <Metadata>
         <Identity Id="AutoDoxyDoc.b7d38074-9221-4840-8d30-56fdc168e295" Version="1.0.7" Language="en-US" Publisher="Joni-Matti Määttä" />
         <DisplayName>AutoDoxyDoc</DisplayName>
-        <Description xml:space="preserve">Doxygen comment generator for C/C++.</Description>
-        <Icon>Resources\AutoDoxyDocPackage.ico</Icon>
+        <Description xml:space="preserve">Doxygen comment generator for C/C++ (VS2022 edition).</Description>
+        <Icon>AutoDoxyDocPackage.ico</Icon>
     </Metadata>
     <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 17.0)">
-            <ProductArchitecture>x86</ProductArchitecture>
-        </InstallationTarget>
-        <InstallationTarget Version="[15.0,17.0)" Id="Microsoft.VisualStudio.Pro">
-            <ProductArchitecture>x86</ProductArchitecture>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
+            <ProductArchitecture>amd64</ProductArchitecture>
         </InstallationTarget>
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
     </Dependencies>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,17.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,18.0)" DisplayName="Visual Studio core editor" />
     </Prerequisites>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
