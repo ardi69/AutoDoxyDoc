@@ -77,6 +77,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <VSCTCompile Include="..\SharedFiles\AutoDoxyDocPackage.vsct">
+      <Link>AutoDoxyDocPackage.vsct</Link>
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Icons.png" />
   </ItemGroup>
   <Import Project="..\AutoDoxyDocShared\AutoDoxyDocShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
