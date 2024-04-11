@@ -189,7 +189,7 @@ namespace AutoDoxyDoc
                 ts.EndOfLine();
             }
 
-            ts.Insert("\r\n" + spaces + doxyComment);
+            ts.Insert(m_generator.GenerateLineBreak() + spaces + doxyComment);
 
             // If this is a new comment, move to the main comment position immediately.
             if (startLine < 0)

@@ -8,6 +8,12 @@ namespace AutoDoxyDoc
         JavaDoc
     };
 
+    public enum DoxygenLineEnding
+    {
+        CRLF,
+        LF
+    };
+
     /// <summary>
     /// Function parameter direction options.
     /// </summary>
@@ -35,6 +41,9 @@ namespace AutoDoxyDoc
         /// </summary>
         public DoxygenStyle TagStyle { get; set; } = DoxygenStyle.JavaDoc;
 
+        public DoxygenLineEnding LineEndingStyle { get; set; } = DoxygenLineEnding.CRLF;
+
+
         /// <summary>
         /// File comment template.
         /// </summary>
@@ -55,6 +64,22 @@ namespace AutoDoxyDoc
 
                     case DoxygenStyle.Qt:
                         return '\\';
+                }
+            }
+        }
+
+        public string LineEnding
+        {
+            get
+            {
+                switch (LineEndingStyle)
+                {
+                    case DoxygenLineEnding.CRLF:
+                    default:
+                        return "\r\n";
+
+                    case DoxygenLineEnding.LF:
+                        return "\n";
                 }
             }
         }
@@ -108,6 +133,7 @@ namespace AutoDoxyDoc
         {
             TagIndentation = options.TagIndentation;
             TagStyle = options.TagStyle;
+            LineEndingStyle = options.LineEndingStyle;
             FileCommentTemplate = options.FileCommentTemplate;
             SmartComments = options.SmartComments;
             SmartCommentsForAllFunctions = options.SmartCommentsForAllFunctions;

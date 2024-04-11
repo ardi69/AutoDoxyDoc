@@ -119,12 +119,12 @@ namespace AutoDoxyDoc
             foreach (ParsedSection section in parsedComment.TagSections)
             {
                 string tagLine = m_indentString + Config.TagChar + section.TagName + " ";
-                sb.Append("\r\n" + spaces + " *");
-                sb.Append("\r\n" + spaces + " *  " + tagLine);
+                sb.Append(Config.LineEnding + spaces + " *");
+                sb.Append(Config.LineEnding + spaces + " *  " + tagLine);
                 AppendComments(sb, section.Comments, spaces, tagLine.Length);
             }
 
-            sb.Append("\r\n" + spaces + " */");
+            sb.Append(Config.LineEnding + spaces + " */");
             return sb.ToString();
         }
 
@@ -135,7 +135,11 @@ namespace AutoDoxyDoc
         /// <returns>Generated line string.</returns>
         public string GenerateTagStartLine(string spaces)
         {
-            return "\r\n" + spaces + "*  ";
+            return Config.LineEnding + spaces + "*  ";
+        }
+        public string GenerateLineBreak()
+        {
+            return Config.LineEnding;
         }
 
         /// <summary>
@@ -154,6 +158,8 @@ namespace AutoDoxyDoc
             // Fetch file comment template from config.
             string fileComment = Config.FileCommentTemplate;
 
+            fileComment = fileComment.Replace("\r\n", "\n"); // all line endings now \n
+            fileComment = fileComment.Replace("\n", Config.LineEnding); // all line endings now as configured
             // Replace format tags.
             DateTime localDate = DateTime.Now;
             fileComment = fileComment.Replace("{FILENAME}", filename);
@@ -200,13 +206,13 @@ namespace AutoDoxyDoc
             {
                 foreach (string line in parsedComment.BriefComments)
                 {
-                    sb.Append("\r\n" + spaces + " *  " + line);
+                    sb.Append(Config.LineEnding + spaces + " *  " + line);
                 }
             }
             else
             {
                 // Write placeholder for main comment.
-                sb.Append("\r\n" + spaces + " *  ");
+                sb.Append(Config.LineEnding + spaces + " *  ");
 
                 // Try to determine initial main comment if comment auto-generation is enabled.
                 if (Config.SmartComments)
@@ -244,7 +250,7 @@ namespace AutoDoxyDoc
             }
 
             // Create doxygen lines for each parameter.
-            sb.Append("\r\n" + spaces + " *");
+            sb.Append(Config.LineEnding + spaces + " *");
 
             foreach (string tparamName in tparams)
             {
@@ -258,7 +264,7 @@ namespace AutoDoxyDoc
 
                 string paramAlignSpaces = new string(' ', maxParamNameLength - tparamName.Length + 1);
                 string tagLine = m_indentString + Config.TagChar + "tparam " + tparamName + paramAlignSpaces;
-                sb.Append("\r\n" + spaces + " *  " + tagLine);
+                sb.Append(Config.LineEnding + spaces + " *  " + tagLine);
 
                 // Add existing comments.
                 if (parsedParam != null)
@@ -307,7 +313,7 @@ namespace AutoDoxyDoc
             // Create doxygen lines for each parameter.
             if (function.Children.Count > 0)
             {
-                sb.Append("\r\n" + spaces + " *");
+                sb.Append(Config.LineEnding + spaces + " *");
 
                 foreach (CodeElement child in function.Children)
                 {
@@ -328,7 +334,7 @@ namespace AutoDoxyDoc
                         string paramAlignSpaces = new string(' ', maxParamNameLength - param.Name.Length + 1);
                         string typeAlignSpaces = new string(' ', maxTypeDirectionLength - typeDirName.Length + 1);
                         string tagLine = m_indentString + Config.TagChar + "param " + typeDirName + typeAlignSpaces + param.Name + paramAlignSpaces;
-                        sb.Append("\r\n" + spaces + " *  " + tagLine);
+                        sb.Append(Config.LineEnding + spaces + " *  " + tagLine);
 
                         // Add existing comments.
                         if (parsedParam != null)
@@ -357,9 +363,9 @@ namespace AutoDoxyDoc
 
             if (function.Type.AsString != "void")
             {
-                sb.Append("\r\n" + spaces + " *");
+                sb.Append(Config.LineEnding + spaces + " *");
                 string tagLine = m_indentString + Config.TagChar + "return ";
-                sb.Append("\r\n" + spaces + " *  " + tagLine);
+                sb.Append(Config.LineEnding + spaces + " *  " + tagLine);
 
                 if (parsedComment.Returns != null)
                 {
@@ -413,7 +419,7 @@ namespace AutoDoxyDoc
 
             if (comment.Length > 0)
             {
-                string[] lines = comment.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = comment.Split(Config.LineEnding.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
                 // Trim leading and trailing whitespace before any parsing.
                 for (int i = 0; i < lines.Length; ++i)
@@ -608,7 +614,7 @@ namespace AutoDoxyDoc
 
                 for (int i = 1; i < comments.Count; ++i)
                 {
-                    sb.Append("\r\n" + spaces + " *  " + indentString + comments[i]);
+                    sb.Append(Config.LineEnding + spaces + " *  " + indentString + comments[i]);
                 }
             }
         }

@@ -13,6 +13,11 @@ namespace AutoDoxyDoc
     public class OptionsPage : DialogPage
     {
         [Category("General")]
+        [DisplayName("Line ending")]
+        [Description("used line endings for Doxygen lines")]
+        public DoxygenLineEnding LineEndingStyle { get; set; } = DoxygenLineEnding.CRLF;
+
+        [Category("General")]
         [DisplayName("Tags indentation")]
         [Description("Number of extra indentation spaces for Doxygen tag lines.")]
         public int TagIndentation { get; set; } = 4;
